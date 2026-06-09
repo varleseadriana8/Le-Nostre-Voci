@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Nostre Voci – eBook della Classe IV A</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --ink:    #1a1208;
+  --paper:  #faf7f2;
+  --cream:  #f3ede3;
+  --gold:   #b8860b;
+  --gold-l: #d4ac0d;
+  --teal:   #0e6655;
+  --blue:   #1a3a5c;
+  --rose:   #8b2252;
+  --sage:   #4a6741;
+  --terr:   #8b4513;
+  --muted:  #6b5e4e;
+  --border: #d4c9b8;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Lora', Georgia, serif;
+  background: var(--ink);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SCROLLBAR ────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ══════════════════════════════════════════════════
+   COVER
+══════════════════════════════════════════════════ */
+#cover {
+  min-height: 100vh;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  padding: 60px 24px;
+}
+.cover-grain {
+  position: absolute; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.cover-ornament {
+  position: absolute; font-size: 22rem; color: rgba(184,134,11,0.04);
+  font-family: 'Playfair Display', serif; font-style: italic;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  white-space: nowrap; pointer-events: none; z-index: 0;
+  animation: fadeInSlow 3s ease both;
+}
+@keyframes fadeInSlow { from { opacity:0 } to { opacity:1 } }
+.cover-inner {
+  position: relative; z-index: 1; text-align: center; max-width: 700px;
+}
+.cover-tag {
+  display: inline-block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .72rem; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); border: 1px solid rgba(184,134,11,.4);
+  padding: 6px 18px; border-radius: 2px; margin-bottom: 40px;
+  animation: riseIn .8s ease .2s both;
+}
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.2rem, 8vw, 6rem);
+  font-style: italic; color: var(--paper);
+  line-height: 1.05; margin-bottom: 18px;
+  animation: riseIn .8s ease .4s both;
+}
+.cover-title span { color: var(--gold-l); font-style: normal; }
+.cover-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem; color: rgba(250,247,242,.5);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 48px;
+  animation: riseIn .8s ease .6s both;
+}
+.cover-divider {
+  width: 80px; height: 1px; background: var(--gold);
+  margin: 0 auto 32px; animation: riseIn .8s ease .7s both;
+}
+.cover-meta {
+  font-family: 'DM Sans', sans-serif; font-size: .82rem;
+  color: rgba(250,247,242,.4); line-height: 2; letter-spacing: .5px;
+  animation: riseIn .8s ease .8s both;
+}
+.cover-scroll {
+  margin-top: 60px; cursor: pointer;
+  animation: riseIn .8s ease 1s both, bounce 2s ease 1.8s infinite;
+  font-family: 'DM Sans', sans-serif; font-size: .75rem;
+  color: var(--gold); letter-spacing: 2px; text-transform: uppercase;
+}
+.cover-scroll::after { display: block; content: "↓"; font-size: 1.2rem; margin-top: 5px; }
+@keyframes riseIn { from { opacity:0; transform:translateY(24px) } to { opacity:1; transform:none } }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+/* ══════════════════════════════════════════════════
+   NAV
+══════════════════════════════════════════════════ */
+#nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(26,18,8,.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(184,134,11,.2);
+  padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.nav-title { font-family:'Playfair Display',serif; font-size:.95rem; font-style:italic; color:var(--gold); }
+.nav-links { display:flex; gap:4px; }
+.nav-link {
+  font-family:'DM Sans',sans-serif; font-size:.72rem; letter-spacing:1.5px;
+  text-transform:uppercase; color:rgba(250,247,242,.5); text-decoration:none;
+  padding: 6px 12px; border-radius:3px; transition:.2s;
+  cursor:pointer; border:none; background:none;
+}
+.nav-link:hover { color:var(--gold); background:rgba(184,134,11,.08); }
+@media(max-width:640px){.nav-links{display:none;}}
+
+/* ══════════════════════════════════════════════════
+   PAGE WRAPPER
+══════════════════════════════════════════════════ */
+.book-page {
+  background: var(--paper);
+  min-height: 100vh;
+  position: relative;
+}
+.book-page::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-l) 50%, var(--gold) 100%);
+}
+.page-inner { max-width: 860px; margin: 0 auto; padding: 80px 48px; }
+@media(max-width:600px){ .page-inner{padding:48px 24px;} }
+
+/* ── Chapter headers ─────────────────────────────── */
+.chapter-header {
+  text-align: center; margin-bottom: 64px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+.chapter-num {
+  font-family:'DM Sans',sans-serif; font-size:.7rem;
+  letter-spacing:4px; text-transform:uppercase; color:var(--gold);
+  margin-bottom: 16px;
+}
+.chapter-title {
+  font-family:'Playfair Display',serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: var(--ink); line-height:1.15; margin-bottom:16px;
+}
+.chapter-intro {
+  font-family:'Lora',serif; font-size:1.05rem;
+  color:var(--muted); font-style:italic; max-width:560px; margin:0 auto;
+  line-height:1.75;
+}
+
+/* ── Drop cap ────────────────────────────────────── */
+.drop-cap::first-letter {
+  font-family: 'Playfair Display', serif;
+  font-size: 4.5rem; font-weight: 900;
+  float: left; line-height: .8;
+  padding-right: 10px; padding-top: 6px;
+  color: var(--gold);
+}
+
+/* ── Prose ────────────────────────────────────────── */
+.prose {
+  font-family:'Lora',serif; font-size:1.05rem;
+  line-height:1.9; color: #2a1f14;
+  text-align: justify;
+}
+.prose + .prose { margin-top: 1.4em; }
+.prose em { color: var(--blue); font-style:italic; }
+.prose strong { color: var(--ink); }
+
+/* ── Student entry card ──────────────────────────── */
+.entry {
+  margin-bottom: 72px;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.entry.visible { opacity:1; transform:none; }
+
+.entry-header {
+  display: flex; align-items: center; gap: 18px;
+  margin-bottom: 28px;
+}
+.entry-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items:center; justify-content:center;
+  font-family:'Playfair Display',serif; font-size:1.3rem;
+  font-style:italic; font-weight:700; flex-shrink:0;
+  border: 2px solid currentColor;
+}
+.entry-meta { flex:1; }
+.entry-name {
+  font-family:'Playfair Display',serif; font-size:1.1rem;
+  color:var(--ink); margin-bottom:2px;
+}
+.entry-detail {
+  font-family:'DM Sans',sans-serif; font-size:.75rem;
+  color:var(--muted); letter-spacing:.5px;
+}
+.entry-tag {
+  font-family:'DM Sans',sans-serif; font-size:.68rem;
+  letter-spacing:2px; text-transform:uppercase;
+  padding: 4px 12px; border-radius:2px; flex-shrink:0;
+  background: rgba(0,0,0,.06); color:var(--muted);
+}
+
+.entry-body {
+  padding: 32px 36px;
+  border-left: 3px solid var(--border);
+  background: var(--cream);
+  border-radius: 0 8px 8px 0;
+  position: relative;
+}
+.entry-body::before {
+  content: '"';
+  position:absolute; top:-12px; left:24px;
+  font-family:'Playfair Display',serif;
+  font-size:5rem; color:var(--border);
+  line-height:1; pointer-events:none;
+}
+.entry-body .prose { font-size:1rem; }
+
+/* ── Pull quote ──────────────────────────────────── */
+.pull-quote {
+  margin: 56px 0;
+  padding: 40px 48px;
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  border-radius: 4px;
+  overflow:hidden;
+}
+.pull-quote::before {
+  content:'';
+  position:absolute; left:0; top:0; bottom:0; width:5px;
+  background: linear-gradient(180deg, var(--gold), var(--gold-l));
+}
+.pull-quote blockquote {
+  font-family:'Playfair Display',serif;
+  font-size: clamp(1.2rem,3vw,1.6rem);
+  font-style:italic; line-height:1.55;
+  color: var(--paper); margin-bottom:16px;
+}
+.pull-quote cite {
+  font-family:'DM Sans',sans-serif; font-size:.8rem;
+  color: rgba(250,247,242,.5); letter-spacing:1px;
+  font-style:normal;
+}
+
+/* ── Divider ornament ────────────────────────────── */
+.ornament {
+  text-align:center; margin: 48px 0;
+  color:var(--gold); letter-spacing:12px; font-size:.8rem;
+  opacity:.5;
+}
+
+/* ── Intro section (page 0) ──────────────────────── */
+#intro { background: var(--paper); }
+.intro-letter {
+  max-width:680px; margin:0 auto;
+  font-family:'Lora',serif; font-size:1.05rem;
+  line-height:1.9; color:#2a1f14;
+}
+.intro-letter .salutation {
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem; font-style:italic;
+  color:var(--gold); margin-bottom:28px;
+}
+.intro-letter .sign {
+  margin-top:36px;
+  font-family:'Playfair Display',serif;
+  font-style:italic; font-size:1rem; color:var(--muted);
+}
+
+/* ── Section: il film ────────────────────────────── */
+#film { background: #f0ede6; }
+
+/* ── Section: monologhi ──────────────────────────── */
+#monologhi { background: var(--paper); }
+
+/* ── Section: debate ─────────────────────────────── */
+#debate { background: #f0ede6; }
+.debate-card {
+  border-radius: 6px; overflow:hidden; margin-bottom:28px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.08);
+  opacity:0; transform:translateY(20px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.debate-card.visible { opacity:1; transform:none; }
+.debate-header {
+  padding: 14px 22px;
+  font-family:'DM Sans',sans-serif; font-size:.78rem;
+  letter-spacing:2px; text-transform:uppercase; color:#fff;
+  display:flex; align-items:center; gap:10px;
+}
+.debate-body {
+  padding: 22px 28px;
+  background: var(--cream);
+  font-family:'Lora',serif; font-size:.98rem;
+  line-height:1.8; color:#2a1f14;
+}
+.debate-speaker {
+  font-family:'DM Sans',sans-serif; font-size:.78rem;
+  color:var(--muted); margin-bottom:8px; letter-spacing:.5px;
+}
+
+/* ── Section: civica ─────────────────────────────── */
+#civica { background: var(--paper); }
+.law-box {
+  border-left: 4px solid var(--teal);
+  background: rgba(14,102,85,.06);
+  padding: 24px 28px; margin: 36px 0;
+  border-radius:0 6px 6px 0;
+}
+.law-box .art {
+  font-family:'DM Sans',sans-serif; font-size:.72rem;
+  letter-spacing:2px; text-transform:uppercase;
+  color:var(--teal); margin-bottom:8px;
+}
+.law-box p { font-family:'Lora',serif; font-size:.96rem; color:#2a1f14; line-height:1.7; font-style:italic; }
+
+/* ── Section: sara ───────────────────────────────── */
+#sara { background: linear-gradient(180deg, #f5edf5 0%, var(--paper) 100%); }
+.sara-quote {
+  background: #4a1942;
+  color: #fff;
+  padding: 44px 48px; border-radius:6px;
+  margin: 40px 0; position:relative; overflow:hidden;
+}
+.sara-quote::after {
+  content:'💜'; position:absolute; right:28px; bottom:16px;
+  font-size:3rem; opacity:.2;
+}
+.sara-quote blockquote {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.15rem,2.5vw,1.45rem);
+  font-style:italic; line-height:1.6; margin-bottom:14px;
+}
+.sara-quote cite {
+  font-family:'DM Sans',sans-serif; font-size:.78rem;
+  color:rgba(255,255,255,.55); letter-spacing:1px; font-style:normal;
+}
+
+/* ── Section: chiusura ───────────────────────────── */
+#chiusura {
+  background: var(--ink); color:var(--paper);
+  min-height:100vh; display:flex; align-items:center;
+}
+#chiusura .page-inner { text-align:center; }
+.close-title {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,6vw,4.5rem);
+  font-style:italic; color:var(--gold-l);
+  margin-bottom:28px; line-height:1.1;
+}
+.close-body {
+  font-family:'Lora',serif; font-size:1.05rem;
+  color:rgba(250,247,242,.7); max-width:600px; margin:0 auto 48px;
+  line-height:1.85;
+}
+.close-names {
+  display: flex; flex-wrap:wrap; gap:10px; justify-content:center;
+  margin:40px 0;
+}
+.close-name {
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:.95rem; color:rgba(250,247,242,.6);
+  padding: 6px 16px; border:1px solid rgba(184,134,11,.3); border-radius:20px;
+}
+.close-final {
+  margin-top:56px; font-family:'Playfair Display',serif;
+  font-style:italic; font-size:1.3rem; color:var(--gold);
+}
+
+/* ── Page footer ──────────────────────────────────── */
+.page-footer {
+  text-align:center; padding:20px 0 48px;
+  font-family:'DM Sans',sans-serif; font-size:.72rem;
+  color:var(--muted); letter-spacing:1.5px; text-transform:uppercase;
+}
+.page-num { color:var(--gold); font-weight:600; }
+
+/* ── Animations via IntersectionObserver ─────────── */
+.fade-in { opacity:0; transform:translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ COVER ══════════════ -->
+<section id="cover">
+  <div class="cover-grain"></div>
+  <div class="cover-ornament">Wonder</div>
+  <div class="cover-inner">
+    <div class="cover-tag">eBook · Classe IV A · Liceo Linguistico</div>
+    <h1 class="cover-title"><span>Le</span> Nostre<br>Voci</h1>
+    <p class="cover-subtitle">Riflessioni, emozioni e parole nate da un film</p>
+    <div class="cover-divider"></div>
+    <div class="cover-meta">
+      Progetto Wonder · Anno scolastico 2025/2026<br>
+      Italiano · Lingua Inglese · Educazione Civica<br>
+      Liceo Linguistico — IV A
+    </div>
+    <div class="cover-scroll" onclick="document.getElementById('nav').scrollIntoView({behavior:'smooth'})">Sfoglia il libro</div>
+  </div>
+</section>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav id="nav">
+  <div class="nav-title">Le Nostre Voci</div>
+  <div class="nav-links">
+    <button class="nav-link" onclick="scrollTo('intro')">Prefazione</button>
+    <button class="nav-link" onclick="scrollTo('film')">Il Film</button>
+    <button class="nav-link" onclick="scrollTo('monologhi')">Monologhi</button>
+    <button class="nav-link" onclick="scrollTo('debate')">Debate</button>
+    <button class="nav-link" onclick="scrollTo('civica')">Costituzione</button>
+    <button class="nav-link" onclick="scrollTo('sara')">Voce Speciale</button>
+    <button class="nav-link" onclick="scrollTo('chiusura')">Fine</button>
+  </div>
+</nav>
+
+<!-- ══════════════ PREFAZIONE ══════════════ -->
+<section id="intro" class="book-page">
+  <div class="page-inner">
+    <div class="chapter-header fade-in">
+      <div class="chapter-num">Prefazione</div>
+      <h2 class="chapter-title">Una lettera ai lettori</h2>
+      <p class="chapter-intro">Dall'insegnante alla classe, e dalla classe al mondo.</p>
+    </div>
+
+    <div class="intro-letter fade-in">
+      <div class="salutation">Care lettrici, cari lettori,</div>
+      <p class="prose drop-cap">Questo libro non era nei piani. Era nei cuori. Quando ho proposto alla IV A di guardare <em>Wonder</em>, non sapevo che si sarebbe aperta una porta che nessuno di noi avrebbe voluto richiudere.</p>
+      <p class="prose" style="margin-top:1.4em">Nelle settimane successive, qualcosa di raro è accaduto in quella classe: i ragazzi hanno smesso di scrivere per me. Hanno iniziato a scrivere per sé stessi, per i loro compagni, per Auggie, per Miranda, per Via. Per le maschere che tutti, in un modo o nell'altro, ci mettono ogni mattina prima di entrare a scuola.</p>
+      <p class="prose" style="margin-top:1.4em">Ciò che state per leggere è autentico. Non ho corretto le imperfezioni stilistiche che sentivo vive, non ho smussato gli angoli delle emozioni più crude. Ho solo ordinato le voci, come si ordina un mazzo di fiori selvatici: cercando di non togliere nulla di ciò che li rende unici.</p>
+      <p class="prose" style="margin-top:1.4em">Troverete monologhi scritti nei panni di personaggi che molti di voi conoscono. Troverete argomentazioni in inglese, tradotte qui per completezza. Troverete riflessioni su diritti e doveri che forse vi sorprenderanno per la loro maturità. E troverete, in fondo, la voce di Sara — una voce che ha trovato il coraggio di esistere ad alta voce grazie a questo progetto.</p>
+      <p class="prose" style="margin-top:1.4em">Leggete piano. Queste parole meritano tempo.</p>
+      <div class="sign">— La professoressa di Italiano, IV A</div>
+    </div>
+
+    <div class="ornament fade-in">✦ ✦ ✦</div>
+    <div class="page-footer fade-in"><span class="page-num">p. i</span> — Le Nostre Voci</div>
+  </div>
+</section>
+
+<!-- ══════════════ IL FILM ══════════════ -->
+<section id="film" class="book-page">
+  <div class="page-inner">
+    <div class="chapter-header fade-in">
+      <div class="chapter-num">Capitolo Uno</div>
+      <h2 class="chapter-title">Il film che ci ha cambiati</h2>
+      <p class="chapter-intro">Le prime reazioni della classe alla visione di <em>Wonder</em>. Impressioni immediate, non filtrate.</p>
+    </div>
+
+    <div class="entry fade-in">
+      <div class="entry-header">
+        <div class="entry-avatar" style="color:var(--teal);border-color:var(--teal);background:rgba(14,102,85,.07)">G</div>
+        <div class="entry-meta">
+          <div class="entry-name">Giulia, 17 anni</div>
+          <div class="entry-detail">Prima reazione scritta · subito dopo la visione</div>
+        </div>
+        <div class="entry-tag">Reazione immediata</div>
+      </div>
+      <div class="entry-body">
+        <p class="prose drop-cap">Non riuscivo a smettere di guardare il viso di Auggie. Non perché fosse diverso dal mio, ma perché era così <em>onesto</em>. Non si nascondeva. Quando ho capito che il casco da astronauta era il suo modo di scomparire, mi si è fermato il respiro. Quante volte anch'io mi sono messa un casco invisibile prima di entrare in classe? Quante volte ho scelto di non essere vista piuttosto che rischiare di essere giudicata?</p>
+        <p class="prose" style="margin-top:1.2em">Il film non mi ha fatto piangere durante. Mi ha fatto piangere la notte dopo, quando ho capito perché mi aveva colpita così tanto.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote fade-in">
+      <blockquote>"Non ho mai pensato che un film di scuola potesse farmi sentire così visto. Come se Auggie fosse me, ma con un problema che si vede."</blockquote>
+      <cite>— Lorenzo, 16 anni</cite>
+    </div>
+
+    <div class="entry fade-in">
+      <div class="entry-header">
+        <div class="entry-avatar" style="color:var(--blue);border-color:var(--blue);background:rgba(26,58,92,.07)">M</div>
+        <div class="entry-meta">
+          <div class="entry-name">Matteo, 17 anni</div>
+          <div class="entry-detail">Scheda di analisi · Fase 1</div>
+        </div>
+        <div class="entry-tag">Analisi del film</div>
+      </div>
+      <div class="entry-body">
+        <p class="prose drop-cap">La cosa che mi ha colpito di più è la struttura. Il film non racconta la storia di uno: la racconta di tutti. Prima vediamo tutto attraverso gli occhi di Auggie, poi improvvisamente siamo nella testa di Via, poi di Jack, poi di Miranda. È come se il regista ci stesse dicendo: non esiste <em>una sola</em> verità. Ogni persona che ti sta accanto ha la sua versione di ciò che è successo.</p>
+        <p class="prose" style="margin-top:1.2em">Questo mi ha fatto pensare alle volte in cui ho giudicato qualcuno senza chiedergli come stava davvero. Quante storie mi sono perso perché non ho cambiato punto di vista?</p>
+      </div>
+    </div>
+
+    <div class="entry fade-in">
+      <div class="entry-header">
+        <div class="entry-avatar" style="color:var(--rose);border-color:var(--rose);background:rgba(139,34,82,.07)">C</div>
+        <div class="entry-meta">
+          <div class="entry-name">Chiara, 16 anni</div>
+          <div class="entry-detail">Riflessione libera · dopo la discussione</div>
+        </div>
+        <div class="entry-tag">Riflessione</div>
+      </div>
+      <div class="entry-body">
+        <p class="prose">Julian. Tutti l'hanno odiato. Anch'io, all'inizio. Poi, nel finale — quella scena con sua madre — ho capito. Julian non è cattivo: è spaventato. Ha imparato da qualcuno più grande di lui che il mondo si divide in forti e deboli, e ha scelto di stare dalla parte dei forti perché non sapeva che esistesse un'altra opzione.</p>
+        <p class="prose" style="margin-top:1.2em">Non lo giustifico. Ma lo capisco. E forse capire è già il primo passo per non diventarlo.</p>
+      </div>
+    </div>
+
+    <div class="ornament fade-in">✦ ✦ ✦</div>
+    <div class="page-footer fade-in"><span class="page-num">pp. 1–14</span> — Le Nostre Voci</div>
+  </div>
+</section>
+
+<!-- ══════════════ MONOLOGHI ══════════════ -->
+<section id="monologhi" class="book-page">
+  <div class="page-inner">
+    <div class="chapter-header fade-in">
+      <div class="chapter-num">Capitolo Due</div>
+      <h2 class="chapter-title">I Monologhi Interiori</h2>
+      <p class="chapter-intro">Ogni studente ha scelto un personaggio e ne ha scritto i pensieri segreti. Qui, una selezione delle voci più intense.</p>
+    </div>
+
+    <!-- MONOLOGO 1: Via -->
+    <div class="entry fade-in">
+      <div class="entry-header">
+        <div class="entry-avatar" style="color:var(--sage);border-color:var(--sage);background:rgba(74,103,65,.07)">F</div>
+        <div class="entry-meta">
+          <div class="entry-name">Federica, 17 anni</div>
+          <div class="entry-detail">Monologo interiore · Personaggio: Via</div>
+        </div>
+        <div class="entry-tag">Personaggio: Via</div>
+      </div>
+      <div class="entry-body">
+        <p class="prose drop-cap" style="font-style:italic">"Oggi a scuola mi hanno chiesto come stava mio fratello. Non come stavo io. Mai come stavo io.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Non lo dico con rabbia — o almeno, cerco di non farlo. So che Auggie ha bisogno di più attenzione. Lo so da quando avevo cinque anni e ho smesso di piangere quando mi facevo male, perché capivo che non c'era spazio per le mie lacrime accanto alle sue.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Ma stasera, mentre scrivo, mi fermo su questa domanda: chi sono io, senza di lui? Sono 'la sorella di Auggie' oppure sono Olivia Pullman, che ama il teatro, che sogna di vivere a Londra, che ha paura del buio ma non lo dice a nessuno?</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Voglio essere vista. Non invece di lui. Insieme a lui. È possibile?"</p>
+      </div>
+    </div>
+
+    <div class="pull-quote fade-in">
+      <blockquote>"Scrivere il monologo di Via è stata la cosa più difficile e più liberatoria che abbia fatto in tre anni di liceo. Perché parlava di lei, ma anche un po' di me."</blockquote>
+      <cite>— Federica, nota dell'autrice</cite>
+    </div>
+
+    <!-- MONOLOGO 2: Jack -->
+    <div class="entry fade-in">
+      <div class="entry-header">
+        <div class="entry-avatar" style="color:var(--terr);border-color:var(--terr);background:rgba(139,69,19,.07)">A</div>
+        <div class="entry-meta">
+          <div class="entry-name">Alessandro, 17 anni</div>
+          <div class="entry-detail">Monologo interiore · Personaggio: Jack</div>
+        </div>
+        <div class="entry-tag">Personaggio: Jack</div>
+      </div>
+      <div class="entry-body">
+        <p class="prose drop-cap" style="font-style:italic">"Halloween. Quella notte mi vergogno di me stesso ancora oggi.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Ho detto quelle cose perché Julian stava aspettando che le dicessi. Perché i ragazzi come Julian non ti aspettano: ti creano la situazione, e poi ti guardano per vedere se sei uno di loro o uno degli altri. E io, per un secondo — un secondo che è durato un'eternità — ho scelto di stare con loro.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Auggie non sa quanto sia costato ammetterlo. Io sì. La cosa più coraggiosa che abbia mai fatto in vita mia non è stata difenderlo — è stata ammettere davanti a me stesso che l'avevo tradito. Che ero capace di tradire qualcuno che mi voleva bene solo per non sentirmi solo.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">L'amicizia vera non è non sbagliare mai. È tornare indietro quando capisci di aver sbagliato."</p>
+      </div>
+    </div>
+
+    <!-- MONOLOGO 3: Miranda -->
+    <div class="entry fade-in">
+      <div class="entry-header">
+        <div class="entry-avatar" style="color:var(--rose);border-color:var(--rose);background:rgba(139,34,82,.07)">S</div>
+        <div class="entry-meta">
+          <div class="entry-name">Sara, 17 anni · <em style="color:var(--rose)">Voce DSA</em></div>
+          <div class="entry-detail">Monologo audio trascritto · Personaggio: Miranda</div>
+        </div>
+        <div class="entry-tag" style="background:rgba(139,34,82,.1);color:var(--rose)">Voce speciale</div>
+      </div>
+      <div class="entry-body" style="border-left-color:var(--rose)">
+        <p class="prose drop-cap" style="font-style:italic">"Ho passato tutta l'estate a reinventarmi. Nuovo nome, nuovi vestiti, nuove amiche. Come se potessi diventare qualcun'altra solo cambiando la superficie.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Via non sa che la invidio. Non per i suoi genitori o per Auggie — la invidio perché lei sa chi è, anche quando nessuno la guarda. Io, quando nessuno mi guarda, sparisco. Diventò trasparente. Non so spiegarlo meglio.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">La scena dello spettacolo è la mia scena preferita. Non perché faccia bene — anzi, all'inizio faccio male, scelgo la cosa sbagliata. Ma poi mi ricordo chi sono davvero. Mi ricordo che le maschere possono cambiare, ma sotto c'è sempre qualcosa che rimane.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Io ci ho messo diciassette anni a capirlo. Miranda ci ha messo un anno scolastico. Forse lei è più brava di me."</p>
+        <p class="prose" style="margin-top:1.6em;font-size:.85rem;color:var(--muted);font-style:normal">
+          <em>Nota dell'insegnante: Sara ha registrato questo monologo in audio. Le sue parole sono state trascritte fedelmente, senza modifiche.</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="ornament fade-in">✦ ✦ ✦</div>
+    <div class="page-footer fade-in"><span class="page-num">pp. 15–44</span> — Le Nostre Voci</div>
+  </div>
+</section>
+
+<!-- ══════════════ DEBATE ══════════════ -->
+<section id="debate" class="book-page">
+  <div class="page-inner">
+    <div class="chapter-header fade-in">
+      <div class="chapter-num">Capitolo Tre</div>
+      <h2 class="chapter-title">Il Debate in Inglese</h2>
+      <p class="chapter-intro">"Schools should implement mandatory anti-bullying programmes to foster inclusion." — La mozione che ha diviso la classe.</p>
+    </div>
+
+    <div class="fade-in">
+      <p class="prose">Il debate si è svolto in lingua inglese. Qui riportiamo i passaggi più significativi, tradotti in italiano per il libro, con le argomentazioni originali in corsivo.</p>
+    </div>
+
+    <div style="margin-top:40px">
+
+      <div class="debate-card fade-in">
+        <div class="debate-header" style="background:var(--teal)">
+          <span>✅</span> Proposizione — Apertura
+        </div>
+        <div class="debate-body">
+          <div class="debate-speaker">Emma, 17 anni — Prima argomentazione</div>
+          <p><em>"The numbers don't lie: 1 in 3 students worldwide experiences bullying. This is not a personal problem — it is a systemic one. Schools that implement structured anti-bullying programmes see a 25% reduction in incidents within the first year. We cannot rely on individual kindness alone. Kindness needs structure."</em></p>
+          <p style="margin-top:12px;font-size:.9rem;color:var(--muted)">[I numeri non mentono: 1 studente su 3 nel mondo sperimenta il bullismo. Non è un problema personale, è sistemico. Le scuole con programmi strutturati vedono una riduzione del 25% degli episodi nel primo anno. Non possiamo affidarci solo alla gentilezza individuale. La gentilezza ha bisogno di struttura.]</p>
+        </div>
+      </div>
+
+      <div class="debate-card fade-in" style="transition-delay:.1s">
+        <div class="debate-header" style="background:var(--rose)">
+          <span>❌</span> Opposizione — Prima replica
+        </div>
+        <div class="debate-body">
+          <div class="debate-speaker">Luca, 17 anni — Prima replica</div>
+          <p><em>"With respect to my colleague, mandatory programmes risk becoming mere bureaucracy. Empathy cannot be taught through a checklist. What we need is not more rules, but better relationships between students and teachers — adults who model the behaviour they wish to see."</em></p>
+          <p style="margin-top:12px;font-size:.9rem;color:var(--muted)">[Con rispetto per la mia collega, i programmi obbligatori rischiano di diventare pura burocrazia. L'empatia non si insegna con una lista di controllo. Ciò di cui abbiamo bisogno non sono più regole, ma relazioni migliori tra studenti e insegnanti — adulti che modellano il comportamento che vogliono vedere.]</p>
+        </div>
+      </div>
+
+      <div class="debate-card fade-in" style="transition-delay:.2s">
+        <div class="debate-header" style="background:var(--blue)">
+          <span>🔁</span> Proposizione — Closing Statement
+        </div>
+        <div class="debate-body">
+          <div class="debate-speaker">Sofia, 16 anni — Closing statement finale</div>
+          <p><em>"Auggie Pullman didn't need a programme. He needed Jack. But not every Auggie finds a Jack. That's why programmes exist: not to replace human connection, but to create the conditions where human connection is possible for everyone, not just the lucky ones."</em></p>
+          <p style="margin-top:12px;font-size:.9rem;color:var(--muted)">[Auggie Pullman non aveva bisogno di un programma. Aveva bisogno di Jack. Ma non ogni Auggie trova un Jack. Ecco perché i programmi esistono: non per sostituire la connessione umana, ma per creare le condizioni in cui la connessione umana sia possibile per tutti, non solo per i fortunati.]</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pull-quote fade-in" style="margin-top:48px">
+      <blockquote>"Il debate mi ha insegnato qualcosa che la scuola non mi aveva mai insegnato: che puoi avere torto e avere ragione allo stesso tempo. Che le verità migliori stanno nel mezzo."</blockquote>
+      <cite>— Marco, 17 anni, riflessione post-debate</cite>
+    </div>
+
+    <div class="ornament fade-in">✦ ✦ ✦</div>
+    <div class="page-footer fade-in"><span class="page-num">pp. 45–58</span> — Le Nostre Voci</div>
+  </div>
+</section>
+
+<!-- ══════════════ CIVICA ══════════════ -->
+<section id="civica" class="book-page">
+  <div class="page-inner">
+    <div class="chapter-header fade-in">
+      <div class="chapter-num">Capitolo Quattro</div>
+      <h2 class="chapter-title">La Costituzione e Noi</h2>
+      <p class="chapter-intro">Quando un film di Hollywood incontra la Carta fondamentale della Repubblica italiana.</p>
+    </div>
+
+    <div class="law-box fade-in">
+      <div class="art">Articolo 2 — Costituzione Italiana</div>
+      <p>"La Repubblica riconosce e garantisce i diritti inviolabili dell'uomo, sia come singolo, sia nelle formazioni sociali ove si svolge la sua personalità, e richiede l'adempimento dei doveri inderogabili di solidarietà politica, economica e sociale."</p>
+    </div>
+
+    <div class="law-box fade-in" style="border-left-color:var(--blue);background:rgba(26,58,92,.05)">
+      <div class="art" style="color:var(--blue)">Articolo 3 — Costituzione Italiana</div>
+      <p>"Tutti i cittadini hanno pari dignità sociale e sono eguali davanti alla legge, senza distinzione di sesso, di razza, di lingua, di religione, di opinioni politiche, di condizioni personali e sociali."</p>
+    </div>
+
+    <div class="entry fade-in" style="margin-top:48px">
+      <div class="entry-header">
+        <div class="entry-avatar" style="color:var(--teal);border-color:var(--teal);background:rgba(14,102,85,.07)">B</div>
+        <div class="entry-meta">
+          <div class="entry-name">Beatrice, 17 anni</div>
+          <div class="entry-detail">Saggio argomentativo · Educazione Civica</div>
+        </div>
+        <div class="entry-tag">Saggio civico</div>
+      </div>
+      <div class="entry-body">
+        <p class="prose drop-cap">Quando Auggie entra per la prima volta nella Beecher Prep, la Costituzione italiana viene violata. Non da Julian — Julian è solo un ragazzo di dodici anni che non sa ancora cosa sta facendo. Viene violata dal silenzio degli adulti che osservano e non intervengono. Viene violata da ogni insegnante che cambia argomento quando si parla di diversità perché "non fa parte del programma".</p>
+        <p class="prose" style="margin-top:1.2em">L'articolo 3 non dice che tutti i cittadini sono uguali solo sulla carta. Dice che la Repubblica — cioè tutti noi, insegnanti compresi — ha il compito di rimuovere gli ostacoli che impediscono questa eguaglianza. Il bullismo è un ostacolo. Il silenzio di fronte al bullismo è un ostacolo. La gentilezza di facciata senza impegno reale è un ostacolo.</p>
+        <p class="prose" style="margin-top:1.2em"><em>Choose kind</em> non è solo una frase carina stampata su una maglietta. È un articolo della Costituzione scritto in parole che un bambino può capire.</p>
+      </div>
+    </div>
+
+    <div class="entry fade-in">
+      <div class="entry-header">
+        <div class="entry-avatar" style="color:var(--blue);border-color:var(--blue);background:rgba(26,58,92,.07)">D</div>
+        <div class="entry-meta">
+          <div class="entry-name">Davide, 16 anni</div>
+          <div class="entry-detail">Saggio argomentativo · Educazione Civica</div>
+        </div>
+        <div class="entry-tag">Saggio civico</div>
+      </div>
+      <div class="entry-body">
+        <p class="prose drop-cap">Ho letto l'articolo 2 almeno dieci volte prima di capire la parola che mi sembrava più strana: <em>solidarietà</em>. Non è una parola che uso spesso. Ma guardando Wonder ho capito cosa significa in pratica.</p>
+        <p class="prose" style="margin-top:1.2em">Solidarietà non è avere pietà di Auggie. Pietà è guardare qualcuno dall'alto verso il basso. Solidarietà è stare accanto. È quello che fa Jack quando picchia Julian al ballo di Halloween — non perché sia una soluzione intelligente, ma perché in quel momento dice: "tu non sei solo".</p>
+        <p class="prose" style="margin-top:1.2em">La Costituzione ci chiede di essere Jack. Ci chiede di fare la cosa giusta anche quando è scomoda. Anche quando significa perdere popolarità, posizione, sicurezza. Ci chiede di scegliere la gentilezza non come emozione, ma come dovere.</p>
+      </div>
+    </div>
+
+    <div class="ornament fade-in">✦ ✦ ✦</div>
+    <div class="page-footer fade-in"><span class="page-num">pp. 59–80</span> — Le Nostre Voci</div>
+  </div>
+</section>
+
+<!-- ══════════════ SARA ══════════════ -->
+<section id="sara" class="book-page">
+  <div class="page-inner">
+    <div class="chapter-header fade-in">
+      <div class="chapter-num">Capitolo Cinque · Voci Speciali</div>
+      <h2 class="chapter-title">La Voce di Sara</h2>
+      <p class="chapter-intro">Sara ha la dislessia. Ha trovato nel progetto Wonder un modo nuovo di esistere nella scrittura.</p>
+    </div>
+
+    <div class="sara-quote fade-in">
+      <blockquote>"Io ho sempre avuto le parole in testa. Solo che non riuscivo a tirarle fuori sulla carta. Questo progetto me lo ha permesso."</blockquote>
+      <cite>— Sara, 17 anni</cite>
+    </div>
+
+    <div class="fade-in">
+      <p class="prose drop-cap">Sara non ha scritto questo libro come gli altri. Le parole le costano fatica — non perché non le abbia, ma perché il percorso dalla testa alla pagina è per lei pieno di ostacoli invisibili che gli altri non vedono. Dislessia, disortografia: parole tecniche che non dicono nulla di ciò che significa vivere con quella che Sara chiama "la mia traduttrice rotta".</p>
+      <p class="prose" style="margin-top:1.4em">Per Wonder, Sara ha scelto di registrare. Ha parlato, e le sue parole sono diventate suono prima che testo. Poi, con la sintesi vocale, ha ascoltato ciò che aveva detto e ha revisionato. Un processo inverso, che ha prodotto un risultato diretto.</p>
+      <p class="prose" style="margin-top:1.4em">Quello che segue è la sua riflessione finale sul progetto, trascritta fedelmente dalla registrazione originale.</p>
+    </div>
+
+    <div class="entry fade-in" style="margin-top:48px">
+      <div class="entry-header">
+        <div class="entry-avatar" style="color:var(--rose);border-color:var(--rose);background:rgba(139,34,82,.1);font-size:1.6rem">💜</div>
+        <div class="entry-meta">
+          <div class="entry-name">Sara, 17 anni</div>
+          <div class="entry-detail">Riflessione finale · registrazione audio trascritta</div>
+        </div>
+        <div class="entry-tag" style="background:rgba(139,34,82,.1);color:var(--rose)">Audio → testo</div>
+      </div>
+      <div class="entry-body" style="border-left-color:var(--rose)">
+        <p class="prose drop-cap" style="font-style:italic">"La prima cosa che ho pensato guardando Wonder è stata: finalmente un film in cui il protagonista capisce cosa significa essere guardati come se fossi sbagliata.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Auggie viene guardato perché il suo viso è diverso. Io vengo guardata — o meglio, non vengo guardata — quando devo leggere ad alta voce in classe. L'insegnante fa finta di non farlo apposta, ma tutti sanno che il mio nome viene saltato. E quella cosa, quella piccola gentilezza, mi ha sempre fatto sentire più esclusa di quando mi chiamavano.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Poi è arrivato questo progetto. E per la prima volta non mi è stato chiesto di essere uguale agli altri. Mi è stato chiesto di essere me. Il mio monologo di Miranda l'ho detto parlando, non scrivendo. E quando la professoressa l'ha letto in classe — la mia voce, le mie parole, il mio modo di pensare — qualcuno ha detto che era il più bello.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Non lo so se era vero. Ma in quel momento ho capito che le mie parole possono stare in un libro. Che anche la mia voce merita di esistere su carta.</p>
+        <p class="prose" style="margin-top:1.2em;font-style:italic">Auggie alla fine vince il premio per la correttezza. Io non ho vinto nessun premio. Ma ho scritto — o meglio, parlato — qualcosa che forse qualcuno leggerà. E questo è già un premio."</p>
+      </div>
+    </div>
+
+    <div class="pull-quote fade-in" style="background:#4a1942">
+      <blockquote>"Nel libro di Palacio, Auggie dice che non vuole essere straordinario. Vuole solo essere normale. Io voglio l'opposto: voglio che la mia normalità — quella con la dislessia, quella con le parole in disordine — sia considerata straordinaria quanto basta da finire in un libro."</blockquote>
+      <cite>— Sara, 17 anni</cite>
+    </div>
+
+    <div class="ornament fade-in">✦ ✦ ✦</div>
+    <div class="page-footer fade-in"><span class="page-num">pp. 81–90</span> — Le Nostre Voci</div>
+  </div>
+</section>
+
+<!-- ══════════════ CHIUSURA ══════════════ -->
+<section id="chiusura" class="book-page" style="background:var(--ink);color:var(--paper)">
+  <div class="page-inner" style="text-align:center">
+
+    <div class="fade-in" style="font-family:'Playfair Display',serif;font-size:.8rem;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:48px">
+      Fine del libro
+    </div>
+
+    <h2 class="close-title fade-in">Grazie,<br>Auggie.</h2>
+
+    <p class="close-body fade-in">Questo libro non sarebbe esistito senza un bambino immaginario che ha scelto di non nascondersi. Grazie a te, ventitré studenti reali hanno trovato il coraggio di fare lo stesso.</p>
+
+    <div class="ornament fade-in" style="color:rgba(184,134,11,.5)">✦ ✦ ✦</div>
+
+    <p class="close-body fade-in" style="font-style:italic;font-family:'Lora',serif">Le voci che avete letto appartengono a:</p>
+
+    <div class="close-names fade-in">
+      <span class="close-name">Giulia</span>
+      <span class="close-name">Lorenzo</span>
+      <span class="close-name">Matteo</span>
+      <span class="close-name">Chiara</span>
+      <span class="close-name">Federica</span>
+      <span class="close-name">Alessandro</span>
+      <span class="close-name">Sara 💜</span>
+      <span class="close-name">Emma</span>
+      <span class="close-name">Luca</span>
+      <span class="close-name">Sofia</span>
+      <span class="close-name">Marco</span>
+      <span class="close-name">Beatrice</span>
+      <span class="close-name">Davide</span>
+      <span class="close-name">Elisa</span>
+      <span class="close-name">Riccardo</span>
+      <span class="close-name">Martina</span>
+      <span class="close-name">Andrea</span>
+      <span class="close-name">Valentina</span>
+      <span class="close-name">Francesco</span>
+      <span class="close-name">Irene</span>
+      <span class="close-name">Simone</span>
+      <span class="close-name">Alessia</span>
+      <span class="close-name">Niccolò</span>
+    </div>
+
+    <div class="close-final fade-in">
+      "When given the choice between being right<br>and being kind, choose kind."
+    </div>
+    <p class="fade-in" style="margin-top:12px;font-family:'DM Sans',sans-serif;font-size:.8rem;color:rgba(250,247,242,.3);letter-spacing:1.5px">— R.J. Palacio</p>
+
+    <div class="fade-in" style="margin-top:72px;font-family:'DM Sans',sans-serif;font-size:.7rem;color:rgba(250,247,242,.2);letter-spacing:2px">
+      Classe IV A · Liceo Linguistico · Anno scolastico 2025/2026<br>
+      Progetto interdisciplinare: Italiano · Lingua Inglese · Educazione Civica
+    </div>
+
+  </div>
+</section>
+
+<script>
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior:'smooth' });
+}
+
+// IntersectionObserver for fade-in and entry animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in, .entry, .debate-card').forEach(el => {
+  observer.observe(el);
+});
+
+// Stagger children of close-names
+const closeNames = document.querySelectorAll('.close-name');
+closeNames.forEach((n, i) => {
+  n.style.opacity = '0';
+  n.style.transform = 'translateY(10px)';
+  n.style.transition = `opacity .4s ease ${i * 0.05}s, transform .4s ease ${i * 0.05}s`;
+});
+const namesObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      closeNames.forEach(n => { n.style.opacity='1'; n.style.transform='none'; });
+    }
+  });
+}, { threshold: 0.1 });
+const container = document.querySelector('.close-names');
+if (container) namesObs.observe(container);
+</script>
+</body>
+</html>
